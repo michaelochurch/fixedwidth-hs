@@ -1,7 +1,8 @@
-import Control.Applicative (many, (<*))
-import Control.Monad (when)
+import Control.Applicative
+import Control.Monad
 import Data.Attoparsec.Text as Parse
-import Data.Text (Text)
+import Data.Char (isDigit, isSpace)
+import qualified Data.Text as T
 import Data.Text.Encoding (decodeUtf8)
 import qualified Data.ByteString as B
 import System.Environment (getArgs)
@@ -18,11 +19,14 @@ data Date = Date {dYear :: Int,
                   dDay :: Int} deriving Show
 
 data Entry = Entry {eDate :: Date,
-                    eNames :: [Text],
+                    eNames :: [T.Text],
                     eValue :: Int} deriving Show
 
+isDigitOrSpace :: Char -> Bool
+isDigitOrSpace c = (isDigit c) || (isSpace c)
+
 fixInt :: Int -> Parser Int
-fixInt n = fmap read $ count n digit
+fixInt n = fmap (read . dropWhile isSpace) $ count n (satisfy isDigitOrSpace)
 
 date :: Parser Date
 date = do
@@ -35,16 +39,21 @@ entry = do
   eDate <- date
   names <- count 4 (Parse.take 4)
   value <- fixInt 3
+  endOfLine
   return $ Entry eDate names value
 
 -- TODO : many doesn't seem to go past one entry. Figure this out.
 parseLines :: Parser a -> Parser [a]
-parseLines parser = many $ parser
+parseLines parser = many parser
 
+-- runParseFile :: String -> IO ()
+
+
+-- BUGGY
 runParseFile :: String -> IO ()
 runParseFile filename = do
   bytes <- B.readFile filename
-  let result = parseOnly (parseLines entry) (decodeUtf8 bytes)
+  let result = parseOnly (many entry) (decodeUtf8 bytes)
   print result
 
 main :: IO ()
