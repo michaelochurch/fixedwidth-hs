@@ -46,10 +46,6 @@ entry = do
 parseLines :: Parser a -> Parser [a]
 parseLines parser = many parser
 
--- runParseFile :: String -> IO ()
-
-
--- BUGGY
 runParseFile :: String -> IO ()
 runParseFile filename = do
   bytes <- B.readFile filename
