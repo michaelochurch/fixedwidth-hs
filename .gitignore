@@ -1,4 +1,7 @@
 cabal.sandbox.config
 .cabal-sandbox/
 dist/
+Main
+Main.hi
+Main.o
 *~
