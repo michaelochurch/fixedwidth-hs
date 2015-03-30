@@ -1,5 +1,8 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 import Control.Applicative
 import Control.Monad
+import Data.Aeson as Aeson
 import Data.Attoparsec.Text as Parse
 import Data.Char (isDigit, isSpace)
 import qualified Data.Text as T
@@ -10,9 +13,6 @@ import System.Environment (getArgs)
 -- Have to:
 --    1. Parse a fixed-width file.
 --    2. Render useful JSON.
-
--- class JSONable a where
---   toJSON :: a -> JSON
 
 data Date = Date {dYear :: Int,
                   dMonth :: Int,
@@ -42,7 +42,6 @@ entry = do
   endOfLine
   return $ Entry eDate names value
 
--- TODO : many doesn't seem to go past one entry. Figure this out.
 parseLines :: Parser a -> Parser [a]
 parseLines parser = many parser
 
