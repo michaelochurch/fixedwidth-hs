@@ -1,4 +1,4 @@
 #!/bin/bash -e
 
 cabal build
-dist/build/quickparse/quickparse data/1.txt
+dist/build/quickparse/quickparse resources/1.txt
