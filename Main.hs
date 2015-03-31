@@ -4,17 +4,13 @@ import Control.Applicative
 import Control.Monad
 import Data.Aeson as Aeson
 import Data.Attoparsec.Text as Parse
-import qualified Data.ByteString.Lazy.Char8 as BL
+--import qualified Data.ByteString.Lazy.Char8 as BL
 import Data.Char (isDigit, isSpace)
 import qualified Data.Text as T
-import Data.Text.Encoding (decodeUtf8)
+--import Data.Text.Lazy.Encoding (decodeUtf8)
 import qualified Data.ByteString as B
 import System.Environment (getArgs)
 import Text.Printf (printf)
-
--- Have to:
---    1. Parse a fixed-width file.
---    2. Render useful JSON.
 
 data Date = Date {dYear :: Int,
                   dMonth :: Int,
@@ -40,6 +36,7 @@ date = do
   day   <- fixInt 2
   return $ Date year month day
 
+entry :: Parser Entry
 entry = do
   eDate <- date
   names <- count 4 (Parse.take 4)
@@ -60,18 +57,19 @@ instance ToJSON Entry where
             "names" .= names,
             "value" .= value]
 
-runParseFile :: String -> IO ()
-runParseFile filename = do
-  bytes <- B.readFile filename
-  -- TODO: we don't want to load the whole file. (We need to use laziness!)
-  let result = parseOnly (many entry) (decodeUtf8 bytes)
-  case result of   
-   Left errorMsg -> error errorMsg
-   Right entries -> forM_ entries $ \e ->
-     BL.putStrLn $ encode e
+-- runParseFile :: String -> IO ()
+-- runParseFile filename = do
+--   bytes <- BL.readFile filename
+--   -- TODO: we don't want to load the whole file. (We need to use laziness!)
+--   let result = parseOnly (many entry) (decodeUtf8 bytes)
+--   case result of
+--    -- TODO: this requires parsing the whole thing before doing anything. That's bad.
+--    Left errorMsg -> error errorMsg
+--    Right entries -> forM_ entries $ \e ->
+--      BL.putStrLn $ encode e
 
-main :: IO ()
-main = do
-  args <- getArgs
-  when (length args == 0) $ error "usage: \"quickparse\" <filename>"
-  runParseFile $ args !! 0
+-- main :: IO ()
+-- main = do
+--   args <- getArgs
+--   when (length args == 0) $ error "usage: \"quickparse\" <filename>"
+--   runParseFile $ args !! 0
