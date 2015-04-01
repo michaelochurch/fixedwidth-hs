@@ -19,6 +19,8 @@ synopsis:            Quick parsing of fixed-width data formats.
 homepage:            https://github.com/michaelochurch/fixedwidth-hs
 
 -- The file containing the license text.
+license:             MIT
+
 license-file:        LICENSE
 
 -- The package author(s).
