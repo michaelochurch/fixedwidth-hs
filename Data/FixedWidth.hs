@@ -1,7 +1,6 @@
 module Data.FixedWidth where
 
 import Control.Applicative
-import Control.Monad
 import Data.Attoparsec.Text as StrictText
 import Data.Attoparsec.Text.Lazy as LazyText
 import qualified Data.ByteString.Lazy.Char8 as BL
@@ -27,7 +26,7 @@ withFile filename parser action = do
   loop text
 
 lineIterator :: Parser a -> IO () -> (a -> IO ()) -> T.Text -> IO ()
-lineIterator parser fail succeed text =
+lineIterator parser failure succeed text =
   case (parseOnly parser text) of
-    Left _ -> fail
+    Left _  -> failure
     Right a -> succeed a

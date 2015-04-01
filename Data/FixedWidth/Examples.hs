@@ -4,10 +4,9 @@ module Data.FixedWidth.Examples where
 
 import Data.Aeson
 import Data.Attoparsec.Text as StrictText
-import qualified Data.ByteString.Lazy as BL
 import qualified Data.ByteString.Lazy.Char8 as BLC
 import Data.Char (isDigit, isSpace)
-import Data.FixedWidth (lineIterator, withFile)
+import Data.FixedWidth (lineIterator)
 import qualified Data.Text as T
 import Text.Printf (printf)
 
@@ -31,8 +30,8 @@ isDigitOrSpace c = (isDigit c) || (isSpace c)
 fixInt :: Int -> Parser Int
 fixInt n = fmap (read . dropWhile isSpace) $ count n (satisfy isDigitOrSpace)
 
-date :: Parser Date
-date = do
+fixDate8 :: Parser Date
+fixDate8 = do
   year  <- fixInt 4
   month <- fixInt 2
   day   <- fixInt 2
@@ -40,10 +39,10 @@ date = do
 
 entry :: Parser Entry
 entry = do
-  eDate <- date
+  date <- fixDate8
   names <- count 4 (StrictText.take 4)
   value <- fixInt 3
-  return $ Entry eDate names value
+  return $ Entry date names value
 
 instance ToJSON Date where
   toJSON date =
