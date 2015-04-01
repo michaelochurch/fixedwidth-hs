@@ -5,6 +5,7 @@ module Data.FixedWidth.Examples where
 import Data.Aeson
 import Data.Attoparsec.Text as StrictText
 import qualified Data.ByteString.Lazy as BL
+import qualified Data.ByteString.Lazy.Char8 as BLC
 import Data.Char (isDigit, isSpace)
 import Data.FixedWidth (lineIterator, withFile)
 import qualified Data.Text as T
@@ -54,8 +55,7 @@ instance ToJSON Entry where
             "names" .= names,
             "value" .= value]
 
--- TODO : BL.putStrLn has deprecation warning.
 defaultLineIterator :: T.Text -> IO ()
 defaultLineIterator =
   lineIterator entry (putStrLn "Unparseable line.")
-               (BL.putStrLn . encode)
+               (BLC.putStrLn . encode)
