@@ -16,7 +16,7 @@ synopsis:            Quick parsing of fixed-width data formats.
 -- description:         
 
 -- URL for the project homepage or repository.
-homepage:            (none)
+homepage:            https://github.com/michaelochurch/fixedwidth-hs
 
 -- The file containing the license text.
 license-file:        LICENSE
@@ -48,7 +48,8 @@ executable fixedwidth-hs
   main-is:             Main.hs
   
   -- Modules included in this executable, other than Main.
-  -- other-modules:       
+  other-modules:       Data.FixedWidth
+                       Data.FixedWidth.Examples
   
   -- LANGUAGE extensions used by modules in this package.
   -- other-extensions:    
