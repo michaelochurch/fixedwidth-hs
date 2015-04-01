@@ -22,7 +22,7 @@ homepage:            https://github.com/michaelochurch/fixedwidth-hs
 license-file:        LICENSE
 
 -- The package author(s).
-author: Michael O. Church
+author:              Michael O. Church
 
 -- An email address to which users can send suggestions, bug reports, and
 -- patches.
