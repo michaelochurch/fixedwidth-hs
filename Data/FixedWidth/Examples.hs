@@ -13,8 +13,8 @@ data Entry = Entry {eDate :: Date,
                     eNames :: [T.Text],
                     eValue :: Int} deriving Show
 
-entry :: Parser Entry
-entry = do
+parseEntry :: Parser Entry
+parseEntry = do
   date <- fixDate8
   names <- count 4 (StrictText.take 4)
   (Just value) <- fixInt 3
@@ -25,8 +25,3 @@ instance ToJSON Entry where
     object ["date" .= date,
             "names" .= names,
             "value" .= value]
-
--- putJSONLineIterator :: T.Text -> IO ()
--- putJSONLineIterator =
---   lineIterator entry (putStrLn "Unparseable line.")
---                (BLC.putStrLn . encode)
