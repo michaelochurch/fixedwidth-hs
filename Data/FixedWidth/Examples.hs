@@ -2,13 +2,11 @@
 
 module Data.FixedWidth.Examples where
 
-import Data.FixedWidth (lineIterator)
 import Data.FixedWidth.Parsers
 
 import Data.Aeson
 import Data.Attoparsec.Text as StrictText
 
-import qualified Data.ByteString.Lazy.Char8 as BLC
 import qualified Data.Text as T
 
 data Entry = Entry {eDate :: Date,
@@ -28,7 +26,7 @@ instance ToJSON Entry where
             "names" .= names,
             "value" .= value]
 
-putJSONLineIterator :: T.Text -> IO ()
-putJSONLineIterator =
-  lineIterator entry (putStrLn "Unparseable line.")
-               (BLC.putStrLn . encode)
+-- putJSONLineIterator :: T.Text -> IO ()
+-- putJSONLineIterator =
+--   lineIterator entry (putStrLn "Unparseable line.")
+--                (BLC.putStrLn . encode)
