@@ -1,10 +1,18 @@
-module Data.FixedWidth.Parsers where
+module Data.FixedWidth.Parsers(
+  blank,
+  Date(..),
+  fixDate8, fixDate8Maybe,
+  fixInt, fixIntLJ, fixIntRJ,
+  fixText,
+  ) where
 
 import Prelude as P
 
+import Control.Applicative
 import Data.Aeson (toJSON, ToJSON)
-import Data.Attoparsec.Text
+import Data.Attoparsec.Text as AT
 import Data.Char (isDigit, isSpace)
+import qualified Data.Text as T
 import Text.Printf (printf)
 
 isDigitOrSpace :: Char -> Bool
@@ -58,3 +66,16 @@ fixDate8 = do
   (Just month) <- fixInt 2
   (Just day)   <- fixInt 2
   return $ Date year month day
+
+fixText :: Int -> Parser T.Text
+fixText = AT.take
+
+blank :: Int -> Parser ()
+blank n = fmap (const ()) $ count n (satisfy isSpace)
+
+fixOptional :: (Int -> Parser a) -> Int -> Parser (Maybe a)
+fixOptional f n =
+  fmap Just (f n) <|> fmap (const Nothing) (blank n)
+
+fixDate8Maybe :: Parser (Maybe Date)
+fixDate8Maybe = fixOptional (const fixDate8) 8
