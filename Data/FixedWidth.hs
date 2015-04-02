@@ -11,8 +11,8 @@ import Data.Text.Lazy.Encoding (decodeUtf8)
 fileToLazyText :: String -> IO TL.Text
 fileToLazyText filename = fmap decodeUtf8 $ BL.readFile filename
 
-strictLine :: Parser T.Text
-strictLine = (StrictText.takeTill isEndOfLine) <* endOfLine
+strictLineNL :: Parser T.Text
+strictLineNL = (StrictText.takeTill isEndOfLine) <* endOfLine
 
 withFile :: String -> (Parser a) -> (a -> IO ()) -> IO ()
 withFile filename parser action = do
@@ -25,8 +25,9 @@ withFile filename parser action = do
                     _ -> error "failed parse"
   loop text
 
-lineIterator :: Parser a -> IO () -> (a -> IO ()) -> T.Text -> IO ()
-lineIterator parser failure succeed text =
-  case (parseOnly parser text) of
-    Left _  -> failure
-    Right a -> succeed a
+-- This function shouldn't exist.
+-- lineIterator :: Parser a -> IO () -> (a -> IO ()) -> T.Text -> IO ()
+-- lineIterator parser failure succeed text =
+--   case (parseOnly parser text) of
+--     Left _  -> failure
+--     Right a -> succeed a
