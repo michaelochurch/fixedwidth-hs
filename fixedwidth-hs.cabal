@@ -9,7 +9,7 @@ name:                fixedwidth-hs
 -- PVP summary:      +-+------- breaking API changes
 --                   | | +----- non-breaking API additions
 --                   | | | +--- code changes with no API change
-version:             0.2.0.1
+version:             0.3.0.0
 
 synopsis:            Quick parsing of fixed-width data formats.
 
