@@ -1,7 +1,5 @@
 import Control.Monad (when)
-import Data.Aeson
 import qualified Data.Attoparsec.Text as Parse
-import qualified Data.ByteString.Lazy.Char8 as ByteString
 import Data.FixedWidth.Examples
 import Data.FixedWidth.LargeFile
 import qualified Data.Text as Strict
