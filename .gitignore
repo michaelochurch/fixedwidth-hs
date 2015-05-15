@@ -4,5 +4,6 @@ dist/
 Main
 Main.hi
 Main.o
+resources/bigfiles/
 *~
 \#*\#
